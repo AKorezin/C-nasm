@@ -2,19 +2,19 @@ global add_asm
 section .text
 
 add_asm:
-	mov r10, rdi
-	mov rax,0
+	mov r10d, edi
+	mov eax,0
 check:
-	test r10, r10
+	test r10d, r10d
 	jz done
 loop:
-	mov r8, [rcx]
-	mov r9, [rsi]
-	imul r8, r9
-	add rax, r8
+	mov r8d, [rcx]
+	mov r9d, [rsi]
+	imul r8d, r9d
+	add eax, r8d
 	add rcx,4
 	add rsi,4
-	dec r10
+	dec r10d
 	jmp check
 done:
 	ret
