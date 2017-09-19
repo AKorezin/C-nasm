@@ -24,6 +24,8 @@ int main(int argc, char** argv){
 		b[i]=i;
 	}
 
+	printf("%d\n",add(l,a,b));
+	printf("%d\n",add_asm(l,a,b));
 	clock_t begin = clock();
 	for(int i=0;i<1000000;i++)
 		add(l,a,b);
