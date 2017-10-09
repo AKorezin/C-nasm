@@ -1,7 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
-#define N 50
+#include <stdint.h>
+#ifndef AMOUNT_OF_NUMBERS
+#define AMOUNT_OF_NUMBERS 50
+#endif
+#ifndef AMOUNT_OF_ITERATIONS
+#define AMOUNT_OF_ITERATIONS 1000000
+#endif
 
 int add(int l, int *a, int *b){
 	int s=0;
@@ -13,8 +18,11 @@ int add(int l, int *a, int *b){
 
 int add_asm(int l,int *a, int *b);
 
+uint64_t rdtsc();
+
 int main(int argc, char** argv){
-	int l=N;
+	int l=AMOUNT_OF_NUMBERS;
+	int op=AMOUNT_OF_ITERATIONS;
 	int *a=(int*)malloc(l*sizeof(int));
 	int *b=(int*)malloc(l*sizeof(int));
 
@@ -26,24 +34,18 @@ int main(int argc, char** argv){
 	volatile int test;
 	printf("%d\n",add(l,a,b));
 	printf("%d\n",add_asm(l,a,b));
-	clock_t begin=0,end=0;
-	int time_spent=0;
-	begin = clock();
-	for(int i=0;i<1000000;i++)
+	uint64_t t1=0,t2=0,t3=0;
+	double ticks1,ticks2;
+	t1=rdtsc();
+	for(int i=0;i<op;i++)
 		test=add(l,a,b);
-	end = clock();
-	time_spent = end - begin;
-	printf("%d\n",time_spent);
-	begin=0;
-	end=0;
-	time_spent=0;
-	begin = clock();
-	for(int i=0;i<1000000;i++)
+	t2=rdtsc();
+	for(int i=0;i<op;i++)
 		test=add_asm(l,a,b);
-	end = clock();
-	time_spent = end - begin;
-	printf("%d\n",time_spent);
-
+	t3=rdtsc();
+	ticks1=(double)(t2-t1)/(2*l-1)/op;
+	ticks2=(double)(t3-t2)/(2*l-1)/op;
+	printf("%f\n%f\n",ticks1,ticks2);
 	free(a);
 	free(b);
 	return 0;
