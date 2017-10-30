@@ -7,8 +7,8 @@ add_asm:
 	jz done
 	lea r9, [edi*4]
 	xor r11, r11
-	prefetchnta [rdx+r11+128]
-	prefetchnta [rsi+r11+128]
+	prefetchnta [rdx+r11]
+	prefetchnta [rsi+r11]
 loop:
 	mov r10d, [rdx+r11]
 	imul r10d, [rsi+r11]
