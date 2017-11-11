@@ -19,7 +19,6 @@ int add(int l, int *a, int *b){
 int add_asm(int l,int *a, int *b);
 
 int add_xmm_asm(int l, int *a, int *b);
-int add_xmm_new_asm(int l, int *a, int *b);
 
 uint64_t rdtsc();
 
@@ -38,7 +37,6 @@ int main(int argc, char** argv){
 	printf("%d\n",add(l,a,b));
 	printf("%d\n",add_asm(l,a,b));
 	printf("%d\n",add_xmm_asm(l,a,b));
-	printf("%d\n",add_xmm_new_asm(l,a,b));
 	uint64_t t1=0,t2=0,t3=0,t4=0,t5=0;
 	double ticks1,ticks2,ticks3,ticks4;
 	t1=rdtsc();
@@ -51,14 +49,10 @@ int main(int argc, char** argv){
 	for(int i=0;i<op;i++)
 		test=add_xmm_asm(l,a,b);
 	t4=rdtsc();
-	for(int i=0;i<op;i++)
-		test=add_xmm_new_asm(l,a,b);
-	t5=rdtsc();
 	ticks1=(double)(t2-t1)/(2*l-1)/op;
 	ticks2=(double)(t3-t2)/(2*l-1)/op;
 	ticks3=(double)(t4-t3)/(2*l-1)/op;
-	ticks4=(double)(t5-t4)/(2*l-1)/op;
-	printf("%f\n%f\n%f\n%f\n",ticks1,ticks2,ticks3,ticks4);
+	printf("%f\n%f\n%f\n",ticks1,ticks2,ticks3);
 	free(a);
 	free(b);
 	return 0;
