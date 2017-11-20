@@ -7,4 +7,4 @@ set(CMAKE_C_FLAGS "-O2")
 add_definitions(-DAMOUNT_OF_NUMBERS=50)
 add_definitions(-DAMOUNT_OF_ITERATIONS=1000000)
 
-add_executable(main main.c add.asm add_xmm.asm rdtsc.asm)
+add_executable(main main.c add.asm add_xmm.asm add_f.asm add_d.asm rdtsc.asm)
