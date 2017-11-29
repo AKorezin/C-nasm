@@ -16,35 +16,37 @@ section .text
 add_xmm_asm:
 	xor eax, eax
 	mov ecx, edi
-	shr ecx, 3
-	jnz preloop8
+	shr ecx, 4
+	jnz preloop16
 decide:
 	mov ecx, edi
-	and ecx, 7
+	and ecx, 15
 	jnz preloop1 	
 	ret
-preloop8:
-	pxor xmm4, xmm4
-	shl ecx, 5
-loop8:
-	vmovdqa xmm0, [rsi+rcx-32]
-	vmovdqa xmm1, [rdx+rcx-32]
-	vmovdqa xmm2, [rsi+rcx-16]
-	vmovdqa xmm3, [rdx+rcx-16]
-	vpmulld xmm0, xmm1
-	vpmulld xmm2, xmm3
-	vpaddd xmm4, xmm0
-	vpaddd xmm4, xmm2
-	sub ecx, 32
-	jnz loop8
-	vphaddd xmm4, xmm4
-	vphaddd xmm4, xmm4
-	movd eax, xmm4
+preloop16:
+	vpxor ymm4, ymm4
+	shl ecx, 6
+loop16:
+	vmovdqa ymm0, [rsi+rcx-64]
+	vmovdqa ymm1, [rdx+rcx-64]
+	vmovdqa ymm2, [rsi+rcx-32]
+	vmovdqa ymm3, [rdx+rcx-32]
+	vpmulld ymm0, ymm1
+	vpmulld ymm2, ymm3
+	vpaddd ymm4, ymm0
+	vpaddd ymm4, ymm2
+	sub ecx, 64
+	jnz loop16
+	vphaddd ymm4, ymm4
+	vphaddd ymm4, ymm4
+	vextracti128 xmm0, ymm4, 1
+	vpaddd xmm0, xmm4
+	movd eax, xmm0
 	jmp decide
 preloop1:
 	shl edi, 2
 	mov ecx, edi
-	and cl, 0xE0
+	and cl, 0xC0
 loop1:
 	mov r8d, [rsi+rcx]
 	imul r8d, [rdx+rcx]

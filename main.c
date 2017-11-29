@@ -43,8 +43,8 @@ uint64_t rdtsc();
 int main(int argc, char** argv){
 	int l=AMOUNT_OF_NUMBERS;
 	int op=AMOUNT_OF_ITERATIONS;
-	int *a=(int*)malloc(l*sizeof(int));
-	int *b=(int*)malloc(l*sizeof(int));
+	int *a=(int*)aligned_alloc(32,l*sizeof(int));
+	int *b=(int*)aligned_alloc(32,l*sizeof(int));
 	float *a_f=(float*)malloc(l*sizeof(float));
 	float *b_f=(float*)malloc(l*sizeof(float));
 	double *a_d=(double*)malloc(l*sizeof(double));
